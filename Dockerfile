@@ -43,8 +43,8 @@ RUN --mount=type=cache,target=$UV_CACHE_DIR \
 
 COPY $SOURCE_DIR_NAME $SOURCE_DIR_NAME
 
-RUN --mount=type=cache,target=$UV_CACHE_DIR \
-    uv sync --frozen --no-dev
+#RUN --mount=type=cache,target=$UV_CACHE_DIR \
+#    uv sync --frozen --no-dev
 
 ENTRYPOINT []
 
