@@ -1,0 +1,1 @@
+C:/ALERT/Hardlinks/deploy_remote.cmd
