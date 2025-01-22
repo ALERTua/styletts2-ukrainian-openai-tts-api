@@ -3,7 +3,7 @@ import sys
 import os
 
 if sys.platform == 'win32':
-    os.chdir('styletts2-ukrainian')
+    os.chdir('../styletts2-ukrainian')
 else:
     os.chdir('/data')
 
