@@ -6,8 +6,8 @@ git lfs install
 # clone the model repo
 git clone https://huggingface.co/spaces/patriotyk/styletts2-ukrainian
 
-# run the image, mounting the repo in its /data folder
-docker run -v ./styletts2-ukrainian:/data ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest
+# run the image, mounting the repo in its /data folder, opening port 8000
+docker run -v ./styletts2-ukrainian:/data -p 8000:8000 ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest
 ```
 then in Home Assistant
 https://github.com/sfortis/openai_tts
