@@ -6,21 +6,29 @@
 
 [![Docker Image Latest](https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/actions/workflows/docker-image.yml)
 
+Docker image for the [patriotyk/styletts2-ukrainian](https://huggingface.co/spaces/patriotyk/styletts2-ukrainian) gradio app with an OpenAI TTS API endpoint to use it with Home Assistant.
+
+I didn't mean to make a "product" image, but it's a temporary solution until a better option arrives. 
+
 ```
-# install git lfs if needed
+# install git lfs to clone the original repo
 sudo apt install git-lfs
 git lfs install
 
-# clone the model repo
-git clone https://huggingface.co/spaces/patriotyk/styletts2-ukrainian
+# clone the model repo in ./styletts2-ukrainian
+git clone https://huggingface.co/spaces/patriotyk/styletts2-ukrainian --depth=1
 
-# run the image, mounting the repo in its /data folder, opening port 8000
+# run the image, mounting the cloned repo in its /data folder, and opening port 8000
+
 # --gpus=all and --runtime=nvidia binds your NVidia GPU to the container
 # replace them with --device=/dev/dri for Intel GPUs
+# or remove them for full CPU
+
 docker run \
   -d \
   --name='styletts2-ukrainian-openai-tts-api' \
   --net='bridge' \
+  -e 'PORT'='8000' \
   -p '8000:8000/tcp' \
   -v './styletts2-ukrainian/':'/data':'ro' \
   -e 'NVIDIA_VISIBLE_DEVICES'='all' \
