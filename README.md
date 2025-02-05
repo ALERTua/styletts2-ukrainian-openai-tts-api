@@ -39,6 +39,27 @@ docker run \
   'ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest'
 ```
 
-then in Home Assistant
-https://github.com/sfortis/openai_tts
-and use the 8000 port endpoint with any api key, any voice, any model
+then in Home Assistant use https://github.com/sfortis/openai_tts and provide it with the 8000 port endpoint with any api key, any voice, any model (they are hardcoded).
+
+Use `+` symbol before the stressed vowel to stress it, e.g. `русн+я`.
+
+The model handles short messages poorly so at least end each syntax with a dot. 
+
+The model does not handle numbers(!) so make sure to replace them with words.
+```
+pip install num2words
+
+cases = [
+    "nominative",
+    "genitive",
+    "dative",
+    "accusative",
+    "instrumental",
+    "locative"
+]
+    
+a = num2words(42, lang='uk', to='ordinal') # сорок другий
+c = num2words(42, lang='uk', to='cardinal', gender='feminine', case="genitive")  # сорока двох
+d = num2words(1442, lang='uk', to='year')  # одна тисяча чотириста сорок два
+e = num2words(1444.10, lang='uk', to='currency', currency='USD', cents=False, separator='', adjective=True)  # одна тисяча чотириста сорок чотири долари 10 центів
+```
