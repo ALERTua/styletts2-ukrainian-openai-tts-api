@@ -9,6 +9,7 @@
 Docker image for the [patriotyk/styletts2-ukrainian](https://huggingface.co/spaces/patriotyk/styletts2-ukrainian) gradio app with an OpenAI TTS API endpoint to use it with Home Assistant.
 
 I didn't mean to make a "product" image, but it's a temporary solution until a better option arrives. 
+By better option I mean a model of at least the same quality but in Piper-compatible format for easy Home Assistant usage.
 
 ```
 # install git lfs to clone the original repo
