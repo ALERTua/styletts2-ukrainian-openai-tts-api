@@ -4,9 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+    paths-ignore: [ "**/*.md" ]
   pull_request:
     branches: [ "main" ]
-
+    paths-ignore: [ "**/*.md" ]
 env:
   REGISTRY: ghcr.io
 
