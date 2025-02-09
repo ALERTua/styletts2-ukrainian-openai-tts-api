@@ -16,7 +16,7 @@ import numpy as np
 
 os.chdir(Path(__file__).parent.parent / 'styletts2-ukrainian')
 
-from infer import split_to_parts, device, _inf, compute_style  # noqa: E504
+from infer import split_to_parts, device, _inf, compute_style, models as infer_models  # noqa: E504
 from app import prompts_dir  # noqa: E504
 
 logging.basicConfig(level=logging.DEBUG)
@@ -31,13 +31,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MIN_SAMPLE_RATE = 8000
-MAX_SAMPLE_RATE = 48000
 type ResponseFormat = Literal["mp3", "flac", "wav", "pcm"]
 SUPPORTED_RESPONSE_FORMATS = ("mp3", "wav")
 UNSUPORTED_RESPONSE_FORMATS = ("opus", "aac", "flac", "pcm")
 DEFAULT_RESPONSE_FORMAT = "wav"
-DEFAULT_SAMPLE_RATE = 24000
 
 voices = Path(prompts_dir).glob("*.wav")
 voices = {_.stem: _ for _ in voices}
@@ -45,6 +42,15 @@ voice_names: list[str] = list(voices.keys())
 # noinspection PyTypeHints
 type Voice = Literal[voice_names] | int
 DEFAULT_VOICE = 0
+
+models = infer_models.keys()
+# noinspection PyTypeHints
+type Model = Literal[models]
+DEFAULT_MODEL = models[0]
+
+MIN_SAMPLE_RATE = 8000
+MAX_SAMPLE_RATE = 48000
+DEFAULT_SAMPLE_RATE = 24000
 
 
 @spaces.GPU
@@ -78,7 +84,11 @@ def convert_gradio_audio_to_streaming_response(audio: gr.Audio, response_format:
 
 
 class CreateSpeechRequestBody(BaseModel):
-    model: str = ''
+    model: Model = Field(
+        DEFAULT_MODEL,
+        description=f"Model. Supported models are {', '.join(models)}.",
+        examples=models,
+    )
     input: str = Field(
         ...,
         description="The text to generate audio for. ",
@@ -124,8 +134,8 @@ async def list_voices():
 async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
     input_ = body.input
 
-    # model = body.model
-    model = 'multi'
+    model = body.model
+    # model = 'multi'
 
     speed = body.speed
 
