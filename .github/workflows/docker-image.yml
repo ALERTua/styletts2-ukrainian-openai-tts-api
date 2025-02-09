@@ -2,15 +2,15 @@ name: Docker Image Latest
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "main"
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.cmd"
-      - ".github/"
-  release:
-    types: [published]
+#  push:
+#    branches:
+#      - "main"
+#    paths-ignore:
+#      - "**/*.md"
+#      - "**/*.cmd"
+#      - ".github/"
+#  release:
+#    types: [published]
 env:
   REGISTRY: ghcr.io
 
