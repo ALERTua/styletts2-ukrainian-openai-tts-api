@@ -31,20 +31,77 @@ docker run \
   --runtime=nvidia \
   'ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest'
 ```
+### Usage
 
-Install https://github.com/sfortis/openai_tts in your Home Assistant
-Provide it with the url to the container port with any api key, any model (they are hardcoded).
-These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (without .wav)
-E.g.
+- Install https://github.com/sfortis/openai_tts in your Home Assistant
+- Provide it with the url to the container port with any api key, any model (they are hardcoded).
+- These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (without .wav)
+- Use `+` symbol before a vowel to stress it, e.g. `русн+я`.
+- The model handles short messages poorly so at least end each syntax with a dot. 
 
+### Endpoints
 
-Use `+` symbol before a vowel to stress it, e.g. `русн+я`.
+#### Synthesize Speech
 
-The model handles short messages poorly so at least end each syntax with a dot. 
+**Endpoint:** `POST /v1/audio/speech`
 
-The model does not handle numbers(!) so make sure to replace them with words.
+This endpoint synthesizes speech from the given text using the specified voice and parameters.
+
+**Example Request:**
+
+```bash
+curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
+-H "accept: audio/wav" \
+-H "Content-Type: application/json" \
+-d '{
+  "input": "Русн+я вже майже вся подохла. Залишилося ще трохи почекати.",
+  "voice": 5,
+  "speed": 1.0,
+}'
 ```
-pip install num2words
+#### Request Body Parameters
+
+- **input** (string): The text to generate audio for.
+- **voice** (string or int): The voice to use for synthesis. Can be either the voice name or index.
+- **speed** (float): The speed of the speech. Default is `1.0`.
+- ~~**response_format** (string): The format of the audio output. Supported formats are `wav` and `mp3`. Default is `wav`.~~
+- ~~**sample_rate** (int): The sample rate of the audio. Default is `24000`.~~
+
+#### List Voices
+
+**Endpoint:** `GET /v1/audio/voices`
+
+This endpoint returns a list of available voices with their indexes and names.
+
+**Example Request:**
+
+```bash
+curl -X GET "http://127.0.0.1:8000/v1/audio/voices" -H "accept: application/json"
+```
+
+**Example Response:**
+
+```json
+{
+  "voices": [
+    {
+      "index": 0,
+      "name": "Анастасія Павленко"
+    },
+    {
+      "index": 1,
+      "name": "Чарівна Марина Панас"
+    }
+  ]
+}
+```
+
+### Caveats
+
+- The model does not handle numbers(!) so make sure to replace them with words.
+
+```python
+# pip install num2words
 
 cases = [
     "nominative",
