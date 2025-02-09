@@ -1,5 +1,6 @@
 import os
 import io
+import logging
 from pathlib import Path
 from typing import Any, Literal
 
@@ -18,6 +19,8 @@ os.chdir(Path(__file__).parent.parent / 'styletts2-ukrainian')
 from infer import split_to_parts, device, _inf, compute_style  # noqa: E504
 from app import prompts_dir  # noqa: E504
 
+logging.basicConfig(level=logging.DEBUG)
+LOG = logging.getLogger("app")
 
 app = FastAPI()
 # noinspection PyTypeChecker
@@ -34,13 +37,14 @@ type ResponseFormat = Literal["mp3", "flac", "wav", "pcm"]
 SUPPORTED_RESPONSE_FORMATS = ("mp3", "wav")
 UNSUPORTED_RESPONSE_FORMATS = ("opus", "aac", "flac", "pcm")
 DEFAULT_RESPONSE_FORMAT = "wav"
+DEFAULT_SAMPLE_RATE = 24000
 
 voices = Path(prompts_dir).glob("*.wav")
 voices = {_.stem: _ for _ in voices}
 voice_names: list[str] = list(voices.keys())
 # noinspection PyTypeHints
-type Voice = Literal[voice_names]
-DEFAULT_VOICE = voice_names[0]
+type Voice = Literal[voice_names] | int
+DEFAULT_VOICE = 0
 
 
 @spaces.GPU
@@ -94,28 +98,58 @@ class CreateSpeechRequestBody(BaseModel):
         examples=list(SUPPORTED_RESPONSE_FORMATS),
     )
     speed: float = Field(1.0)
-    sample_rate: int | None = Field(24000, ge=MIN_SAMPLE_RATE, le=MAX_SAMPLE_RATE)
+    sample_rate: int | None = Field(DEFAULT_SAMPLE_RATE, ge=MIN_SAMPLE_RATE, le=MAX_SAMPLE_RATE)
+
+
+class VoiceListItem(BaseModel):
+    index: int
+    name: str
+
+
+class VoiceListResponse(BaseModel):
+    voices: list[VoiceListItem]
+
+
+@app.get("/v1/audio/voices", response_model=VoiceListResponse)
+async def list_voices():
+    """
+    Endpoint to list available voices with their indexes.
+    """
+    voice_list = [VoiceListItem(index=i, name=name) for i, name in enumerate(voice_names)]
+    return VoiceListResponse(voices=voice_list)
 
 
 # https://platform.openai.com/docs/api-reference/audio/createSpeech
 @app.post("/v1/audio/speech")
 async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
     input_ = body.input
+
     # model = body.model
-    voice = body.voice
+    model = 'multi'
+
     speed = body.speed
-    response_format = body.response_format
-    sample_rate = body.sample_rate
+
+    # response_format = body.response_format
+    response_format = DEFAULT_RESPONSE_FORMAT
+
+    # sample_rate = body.sample_rate
+    sample_rate = DEFAULT_SAMPLE_RATE
+
+    voice = body.voice
+    if str(voice).isdecimal():
+        voice = voice_names[int(voice)]
     voice_path: Path = voices[voice]
-    print(f"input: {input}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
-    wavs, phonemes = inference(model='multi', text=input_, voice_audio=voice_path, speed=speed)
+
+    LOG.info(f"input: {input}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
+    wavs, phonemes = inference(model=model, text=input_, voice_audio=voice_path, speed=speed)
     # noinspection PyTypeChecker
     audio = gr.Audio((sample_rate, wavs), label="Audio:", autoplay=False, streaming=False, type="numpy",
                      format=response_format)
-    return convert_gradio_audio_to_streaming_response(audio, response_format)
+    # noinspection PyTypeChecker
+    return convert_gradio_audio_to_streaming_response(audio=audio, response_format=response_format)
 
 
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host="127.0.0.1", port=int(os.getenv('PORT', 8000)), log_level="info")
+    uvicorn.run(app, host="127.0.0.1", port=int(os.getenv('PORT', 8000)), log_level="debug")

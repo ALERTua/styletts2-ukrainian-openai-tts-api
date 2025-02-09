@@ -32,9 +32,13 @@ docker run \
   'ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest'
 ```
 
-then in Home Assistant use https://github.com/sfortis/openai_tts and provide it with the 8000 port endpoint with any api key, any voice, any model (they are hardcoded).
+Install https://github.com/sfortis/openai_tts in your Home Assistant
+Provide it with the url to the container port with any api key, any model (they are hardcoded).
+These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (without .wav)
+E.g.
 
-Use `+` symbol before the stressed vowel to stress it, e.g. `русн+я`.
+
+Use `+` symbol before a vowel to stress it, e.g. `русн+я`.
 
 The model handles short messages poorly so at least end each syntax with a dot. 
 
