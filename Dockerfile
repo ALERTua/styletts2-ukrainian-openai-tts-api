@@ -3,10 +3,10 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS production
 LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
 ENV PORT=8000
+ENV DATA_DIR=/data
 EXPOSE $PORT
 
-# git clone https://huggingface.co/spaces/patriotyk/styletts2-ukrainian
-VOLUME ["/data"]
+VOLUME ["$DATA_DIR"]
 
 ENV \
     # uv
@@ -36,15 +36,9 @@ RUN apt-get update && apt-get install -y git ffmpeg \
 RUN --mount=type=cache,target=$UV_CACHE_DIR \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-dev
-
-#COPY uv.lock .
-#COPY pyproject.toml .
+    uv sync --frozen --no-install-project --all-packages --no-dev
 
 COPY $SOURCE_DIR_NAME $SOURCE_DIR_NAME
-
-#RUN --mount=type=cache,target=$UV_CACHE_DIR \
-#    uv sync --frozen --no-dev
 
 ENTRYPOINT []
 

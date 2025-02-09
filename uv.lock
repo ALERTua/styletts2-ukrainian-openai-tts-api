@@ -1,8 +1,14 @@
 version = 1
-requires-python = ">=3.12.8"
+requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.13'",
     "python_full_version < '3.13'",
+]
+
+[manifest]
+members = [
+    "styletts2-ukrainian",
+    "styletts2-ukrainian-openai-tts-api",
 ]
 
 [[package]]
@@ -842,10 +848,10 @@ wheels = [
 
 [[package]]
 name = "nvidia-nvjitlink-cu12"
-version = "12.6.85"
+version = "12.4.127"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9d/d7/c5383e47c7e9bf1c99d5bd2a8c935af2b6d705ad831a7ec5c97db4d82f4f/nvidia_nvjitlink_cu12-12.6.85-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:eedc36df9e88b682efe4309aa16b5b4e78c2407eac59e8c10a6a47535164369a", size = 19744971 },
+    { url = "https://files.pythonhosted.org/packages/ff/ff/847841bacfbefc97a00036e0fce5a0f086b640756dc38caea5e1bb002655/nvidia_nvjitlink_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl", hash = "sha256:06b3b9b25bf3f8af351d664978ca26a16d2c5127dbd53c0497e28d1fb9611d57", size = 21066810 },
 ]
 
 [[package]]
@@ -1516,13 +1522,12 @@ wheels = [
 ]
 
 [[package]]
-name = "styletts2-ukrainian-openai-tts-api"
+name = "styletts2-ukrainian"
 version = "0.1.0"
-source = { virtual = "." }
+source = { virtual = "styletts2-ukrainian" }
 dependencies = [
     { name = "einops" },
     { name = "einops-exts" },
-    { name = "fastapi" },
     { name = "gradio" },
     { name = "gruut" },
     { name = "ipa-uk" },
@@ -1540,20 +1545,12 @@ dependencies = [
     { name = "transformers" },
     { name = "txtsplit" },
     { name = "ukrainian-word-stress" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pre-commit" },
-    { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "einops", specifier = ">=0.8.0" },
     { name = "einops-exts", specifier = ">=0.0.4" },
-    { name = "fastapi", specifier = ">=0.115.6" },
     { name = "gradio", specifier = ">=5.12.0" },
     { name = "gruut", specifier = ">=2.4.0" },
     { name = "ipa-uk", git = "https://github.com/patriotyk/ipa-uk.git" },
@@ -1571,6 +1568,26 @@ requires-dist = [
     { name = "transformers", specifier = ">=4.48.1" },
     { name = "txtsplit", specifier = ">=1.0.0" },
     { name = "ukrainian-word-stress", git = "https://github.com/patriotyk/ukrainian-word-stress.git" },
+]
+
+[[package]]
+name = "styletts2-ukrainian-openai-tts-api"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "fastapi" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pre-commit" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.115.6" },
     { name = "uvicorn", specifier = ">=0.34.0" },
 ]
 
@@ -1582,14 +1599,14 @@ dev = [
 
 [[package]]
 name = "sympy"
-version = "1.13.3"
+version = "1.13.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mpmath" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/11/8a/5a7fd6284fa8caac23a26c9ddf9c30485a48169344b4bd3b0f02fef1890f/sympy-1.13.3.tar.gz", hash = "sha256:b27fd2c6530e0ab39e275fc9b683895367e51d5da91baa8d3d64db2565fec4d9", size = 7533196 }
+sdist = { url = "https://files.pythonhosted.org/packages/ca/99/5a5b6f19ff9f083671ddf7b9632028436167cd3d33e11015754e41b249a4/sympy-1.13.1.tar.gz", hash = "sha256:9cebf7e04ff162015ce31c9c6c9144daa34a93bd082f54fd8f12deca4f47515f", size = 7533040 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/ff/c87e0622b1dadea79d2fb0b25ade9ed98954c9033722eb707053d310d4f3/sympy-1.13.3-py3-none-any.whl", hash = "sha256:54612cf55a62755ee71824ce692986f23c88ffa77207b30c1368eda4a7060f73", size = 6189483 },
+    { url = "https://files.pythonhosted.org/packages/b2/fe/81695a1aa331a842b582453b605175f419fe8540355886031328089d840a/sympy-1.13.1-py3-none-any.whl", hash = "sha256:db36cdc64bf61b9b24578b6f7bab1ecdd2452cf008f34faa33776680c26d66f8", size = 6189177 },
 ]
 
 [[package]]

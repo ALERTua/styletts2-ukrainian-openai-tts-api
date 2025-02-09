@@ -4,6 +4,8 @@ litellm_uuid.txt
 *.cmd
 biome.json
 Modelfile
+data/
+script/
 
 # Git
 .git/

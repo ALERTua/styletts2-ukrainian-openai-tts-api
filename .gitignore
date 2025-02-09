@@ -12,4 +12,4 @@ wheels/
 .venv
 */feed.xml
 tryouts*.py
-styletts2-ukrainian
+data/

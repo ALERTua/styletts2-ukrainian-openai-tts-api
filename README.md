@@ -12,13 +12,6 @@ I didn't mean to make a "product" image, but it's a temporary solution until a b
 By better option I mean a model of at least the same quality but in Piper-compatible format for easy Home Assistant usage.
 
 ```
-# install git lfs to clone the original repo
-sudo apt install git-lfs
-git lfs install
-
-# clone the model repo in ./styletts2-ukrainian
-git clone https://huggingface.co/spaces/patriotyk/styletts2-ukrainian --depth=1
-
 # run the image, mounting the cloned repo in its /data folder, and opening port 8000
 
 # --gpus=all and --runtime=nvidia binds your NVidia GPU to the container
@@ -31,7 +24,7 @@ docker run \
   --net='bridge' \
   -e 'PORT'='8000' \
   -p '8000:8000/tcp' \
-  -v './styletts2-ukrainian/':'/data':'ro' \
+  -v './styletts2-ukrainian-openai-tts-api-data/':'/data':'rw' \
   -e 'NVIDIA_VISIBLE_DEVICES'='all' \
   -e 'NVIDIA_DRIVER_CAPABILITIES'='all' \
   --gpus=all \

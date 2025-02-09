@@ -1,26 +1,23 @@
-import sys
-
 import os
-
-if sys.platform == 'win32':
-    os.chdir('../styletts2-ukrainian')
-else:
-    os.chdir('/data')
-
-from infer import split_to_parts, device, _inf
-
+import io
+from pathlib import Path
 from typing import Any, Literal
 
-import gradio as gr
-import numpy as np
 import torch
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-import io
+import gradio as gr
 import soundfile as sf
 import spaces
+import numpy as np
+
+os.chdir(Path(__file__).parent.parent / 'styletts2-ukrainian')
+
+from infer import split_to_parts, device, _inf, compute_style  # noqa: E504
+from app import prompts_dir  # noqa: E504
+
 
 app = FastAPI()
 # noinspection PyTypeChecker
@@ -38,21 +35,30 @@ SUPPORTED_RESPONSE_FORMATS = ("mp3", "wav")
 UNSUPORTED_RESPONSE_FORMATS = ("opus", "aac", "flac", "pcm")
 DEFAULT_RESPONSE_FORMAT = "wav"
 
+voices = Path(prompts_dir).glob("*.wav")
+voices = {_.stem: _ for _ in voices}
+voice_names: list[str] = list(voices.keys())
+# noinspection PyTypeHints
+type Voice = Literal[voice_names]
+DEFAULT_VOICE = voice_names[0]
+
 
 @spaces.GPU
-def inference(text, speed=1.0, alpha=0.7, diffusion_steps=10, embedding_scale=1.2):
+def inference(model, text, voice_audio, speed: float | int = 1, alpha=0.4, beta=0.4, diffusion_steps=10,
+              embedding_scale=1.2):
     wavs = []
     s_prev = None
-    sentences = split_to_parts(text)
-    # print(sentences)
     phonemes = ''
+
+    sentences = split_to_parts(text)
     noise = torch.randn(1, 1, 256).to(device)
+    ref_s = compute_style(voice_audio) if voice_audio else None
     for text in sentences:
         if text.strip() == "":
             continue
 
-        wav, s_prev, ps = _inf(text, speed, s_prev, noise, alpha=alpha,
-                               diffusion_steps=diffusion_steps, embedding_scale=embedding_scale)
+        wav, s_prev, ps = _inf(model, text, ref_s, speed, s_prev, noise, alpha=alpha,
+                               beta=beta, diffusion_steps=diffusion_steps, embedding_scale=embedding_scale)
         wavs.append(wav)
         phonemes += ' ' + ps
     return np.concatenate(wavs), phonemes
@@ -76,7 +82,11 @@ class CreateSpeechRequestBody(BaseModel):
             "A rainbow is an optical phenomenon caused by refraction, internal reflection and dispersion of light in water droplets resulting in a continuous spectrum of light appearing in the sky. The rainbow takes the form of a multicoloured circular arc. Rainbows caused by sunlight always appear in the section of sky directly opposite the Sun. Rainbows can be caused by many forms of airborne water. These include not only rain, but also mist, spray, and airborne dew."  # noqa: E501
         ],
     )
-    voice: str = ''
+    voice: Voice = Field(
+        DEFAULT_VOICE,
+        description=f"Audio voice. Supported voices are {', '.join(voice_names)}.",
+        examples=voice_names,
+    )
     language: Any | None = None
     response_format: ResponseFormat = Field(
         DEFAULT_RESPONSE_FORMAT,
@@ -90,11 +100,15 @@ class CreateSpeechRequestBody(BaseModel):
 # https://platform.openai.com/docs/api-reference/audio/createSpeech
 @app.post("/v1/audio/speech")
 async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
-    text = body.input
+    input_ = body.input
+    # model = body.model
+    voice = body.voice
     speed = body.speed
     response_format = body.response_format
     sample_rate = body.sample_rate
-    wavs, phonemes = inference(text, speed=speed, alpha=1.0, diffusion_steps=6, embedding_scale=1.0)
+    voice_path: Path = voices[voice]
+    print(f"input: {input}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
+    wavs, phonemes = inference(model='multi', text=input_, voice_audio=voice_path, speed=speed)
     # noinspection PyTypeChecker
     audio = gr.Audio((sample_rate, wavs), label="Audio:", autoplay=False, streaming=False, type="numpy",
                      format=response_format)
