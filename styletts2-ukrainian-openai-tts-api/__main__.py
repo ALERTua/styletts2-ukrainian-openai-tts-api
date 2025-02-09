@@ -40,12 +40,12 @@ voices = Path(prompts_dir).glob("*.wav")
 voices = {_.stem: _ for _ in voices}
 voice_names: list[str] = list(voices.keys())
 # noinspection PyTypeHints
-type Voice = Literal[voice_names] | int
+type Voice = Literal[*voice_names] | int
 DEFAULT_VOICE = 0
 
-models = infer_models.keys()
+models = list(infer_models.keys())
 # noinspection PyTypeHints
-type Model = Literal[models]
+type Model = Literal[*models]
 DEFAULT_MODEL = models[0]
 
 MIN_SAMPLE_RATE = 8000
