@@ -7,7 +7,10 @@ on:
       - "main"
     paths-ignore:
       - "**/*.md"
-
+      - "**/*.cmd"
+      - ".github/"
+  release:
+    types: [published]
 env:
   REGISTRY: ghcr.io
 
@@ -37,9 +40,14 @@ jobs:
           images: |
             ghcr.io/${{ github.repository }}
           tags: |
+            type=edge,branch=main
+            type=ref,event=tag
             type=ref,event=branch
+            type=ref,event=pr
             type=semver,pattern={{version}}
+            type=semver,pattern={{major}}
             type=semver,pattern={{major}}.{{minor}}
+            type=sha
           flavor: |
             latest=true
 
@@ -60,11 +68,14 @@ jobs:
 #          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         env:
           DOCKER_BUILDKIT: 1
         with:
           context: .
+          file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
