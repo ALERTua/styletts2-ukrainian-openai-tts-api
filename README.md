@@ -31,6 +31,20 @@ docker run \
   --runtime=nvidia \
   'ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest'
 ```
+
+### Things to do that I have no knowledge on (help appreciated)
+
+- Make this use less RAM
+- Make this pronounce numbers
+
+### Things to do that depend on the author's code
+
+- Dynamic model loading depending on an environment variable
+
+### Things to do that I have no experience in (help appreciated)
+
+- Make it run fastapi and gradio at the same time or move the API to gradio
+
 ### Usage
 
 - Install https://github.com/sfortis/openai_tts in your Home Assistant
