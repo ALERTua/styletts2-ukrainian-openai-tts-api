@@ -40,6 +40,11 @@ RUN --mount=type=cache,target=$UV_CACHE_DIR \
 
 COPY . .
 
+RUN cd $APP_DIR/styletts2-ukrainian/voices \
+    && rm -rf ./voices \
+    && ln -s . voices \
+    && cd $APP_DIR
+
 HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=5 \
         CMD curl localhost:${PORT}/health || exit 1
 
