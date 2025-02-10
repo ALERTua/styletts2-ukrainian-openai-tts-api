@@ -40,6 +40,7 @@ docker run \
 ### Things to do that depend on the author's code
 
 - Dynamic model loading depending on an environment variable
+- As soon as the code can be executed as is, add it as a submodule to this repository
 
 ### Things to do that I have no experience in (help appreciated)
 
