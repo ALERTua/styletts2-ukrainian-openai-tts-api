@@ -13,3 +13,4 @@ wheels/
 */feed.xml
 tryouts*.py
 data/
+*.*~
