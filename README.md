@@ -44,7 +44,7 @@ docker run \
 
 ### Things to do that I have no experience in (help appreciated)
 
-- [ ] Make it run fastapi and gradio at the same time or move the API to gradio
+- [x] Make it run fastapi and gradio at the same time ~~or move the API to gradio~~
 
 ## TODO
 
@@ -80,11 +80,16 @@ curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
 ```
 #### Request Body Parameters
 
+- ~~**model** (string): model name: multi or single~~
 - **input** (string): The text to generate audio for.
 - **voice** (string or int): The voice to use for synthesis. Can be either the voice name or index.
 - **speed** (float): The speed of the speech. Default is `1.0`.
 - ~~**response_format** (string): The format of the audio output. Supported formats are `wav` and `mp3`. Default is `wav`.~~
 - ~~**sample_rate** (int): The sample rate of the audio. Default is `24000`.~~
+
+#### Gradio Web UI
+
+You can access the Gradio web UI at http://{container_ip}:$PORT
 
 #### List Voices
 

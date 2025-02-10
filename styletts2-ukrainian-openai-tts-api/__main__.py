@@ -17,7 +17,7 @@ import numpy as np
 os.chdir(Path(__file__).parent.parent / 'styletts2-ukrainian')
 
 from infer import split_to_parts, device, _inf, compute_style, models as infer_models  # noqa: E504
-from app import prompts_dir  # noqa: E504
+from app import prompts_dir, demo  # noqa: E504
 
 logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger("app")
@@ -197,4 +197,5 @@ def get_health() -> HealthCheck:
 if __name__ == '__main__':
     import uvicorn
 
+    app = gr.mount_gradio_app(app, demo, path="/")
     uvicorn.run(app, host="127.0.0.1", port=int(os.getenv('PORT', 8000)), log_level="debug")
