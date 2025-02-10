@@ -46,6 +46,10 @@ docker run \
 
 - Make it run fastapi and gradio at the same time or move the API to gradio
 
+## TODO
+
+- healthcheck endpoint
+
 ### Usage
 
 - Install https://github.com/sfortis/openai_tts in your Home Assistant
@@ -132,3 +136,5 @@ c = num2words(42, lang='uk', to='cardinal', gender='feminine', case="genitive") 
 d = num2words(1442, lang='uk', to='year')  # одна тисяча чотириста сорок два
 e = num2words(1444.10, lang='uk', to='currency', currency='USD', cents=False, separator='', adjective=True)  # одна тисяча чотириста сорок чотири долари 10 центів
 ```
+
+Я готовий розширити це readme будь-якою корисною інформацією, лише [скажіть](https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/discussions/new/choose), чого вам не вистачає.
