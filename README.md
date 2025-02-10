@@ -48,7 +48,7 @@ docker run \
 
 ## TODO
 
-- healthcheck endpoint
+- [x] healthcheck endpoint
 
 ### Usage
 
