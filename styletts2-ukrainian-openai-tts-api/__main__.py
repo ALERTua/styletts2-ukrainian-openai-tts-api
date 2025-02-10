@@ -152,9 +152,11 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
 
     LOG.info(f"input: {input}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
     if model == 'multi':
-      wavs, phonemes = inference(model=model, text=input_, voice_audio=voice_path, speed=speed, alpha=0, beta=0, diffusion_steps=20, embedding_scale=1.0)
+        wavs, phonemes = inference(model=model, text=input_, voice_audio=voice_path, speed=speed, alpha=0, beta=0,
+                                   diffusion_steps=20, embedding_scale=1.0)
     else:
-      wavs, phonemes = inference(model=model, text=input_, voice_audio=voice_path, speed=speed, alpha=1, beta=0, diffusion_steps=4, embedding_scale=1.0)
+        wavs, phonemes = inference(model=model, text=input_, voice_audio=voice_path, speed=speed, alpha=1, beta=0,
+                                   diffusion_steps=4, embedding_scale=1.0)
     # noinspection PyTypeChecker
     audio = gr.Audio((sample_rate, wavs), label="Audio:", autoplay=False, streaming=False, type="numpy",
                      format=response_format)
