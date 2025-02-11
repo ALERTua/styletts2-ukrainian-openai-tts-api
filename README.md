@@ -169,5 +169,10 @@ c = num2words(42, lang='uk', to='cardinal', gender='feminine', case="genitive") 
 d = num2words(1442, lang='uk', to='year')  # одна тисяча чотириста сорок два
 e = num2words(1444.10, lang='uk', to='currency', currency='USD', cents=False, separator='', adjective=True)  # одна тисяча чотириста сорок чотири долари 10 центів
 ```
+- The verbalization is tricky and may not work as expected. For example:
+`це тестове повідомлення номер 2012, яке було видане в 1954 році`
+will be verbalized as
+`це тестове повідомлення номер дві тисячі дванадцятого року, яке було видане в тисяча дев'ятсот п'ятдесят четвертому році`
+
 
 Я готовий розширити це readme будь-якою корисною інформацією, лише [скажіть](https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/discussions/new/choose), чого вам не вистачає.
