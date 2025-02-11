@@ -18,7 +18,7 @@ import numpy as np
 os.chdir(Path(__file__).parent.parent / 'styletts2-ukrainian')
 
 from infer import split_to_parts, device, _inf, compute_style, models as infer_models  # noqa: E504
-from app import prompts_dir, demo  # noqa: E504
+from app import prompts_dir, demo, verbalize  # noqa: E504
 
 logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger("app")
@@ -31,6 +31,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+AUTO_USE_VERBALIZER = strtobool(os.getenv('AUTO_USE_VERBALIZER', '1'))
 GRADIO_WEB = strtobool(os.getenv('GRADIO_WEB', '1'))
 GRADIO_ENDPOINT = os.getenv('GRADIO_ENDPOINT', 'web').lstrip('/')
 if GRADIO_WEB:
@@ -116,6 +117,7 @@ class CreateSpeechRequestBody(BaseModel):
     )
     speed: float = Field(1.0)
     sample_rate: int | None = Field(DEFAULT_SAMPLE_RATE, ge=MIN_SAMPLE_RATE, le=MAX_SAMPLE_RATE)
+    verbalize: bool | None = Field(AUTO_USE_VERBALIZER)
 
 
 class VoiceListItem(BaseModel):
@@ -151,13 +153,18 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
 
     # sample_rate = body.sample_rate
     sample_rate = DEFAULT_SAMPLE_RATE
+    verbalize_ = body.verbalize
 
     voice = body.voice
     if str(voice).isdecimal():
         voice = voice_names[int(voice)]
     voice_path: Path = voices[voice]
 
-    LOG.info(f"input: {input}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
+    LOG.info(f"{input_=}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
+    if verbalize_:
+        input_ = verbalize(input_)
+        LOG.info(f"verbalized {input_=}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
+
     if model == 'multi':
         wavs, phonemes = inference(model=model, text=input_, voice_audio=voice_path, speed=speed, alpha=0, beta=0,
                                    diffusion_steps=20, embedding_scale=1.0)

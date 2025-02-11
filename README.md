@@ -24,7 +24,9 @@ docker run \
   --net='bridge' \
   -e 'GRADIO_WEB'='1' \
   -e 'GRADIO_ENDPOINT'='web' \
+  -e 'AUTO_USE_VERBALIZER'='1' \
   -e 'PORT'='8000' \
+  -e 'DATA_DIR'='/data' \
   -p '8000:8000/tcp' \
   -v './styletts2-ukrainian-openai-tts-api-data/':'/data':'rw' \
   -e 'NVIDIA_VISIBLE_DEVICES'='all' \
@@ -33,16 +35,33 @@ docker run \
   --runtime=nvidia \
   'ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest'
 ```
+### Environment Variables
+
+- `PORT`: port for the API (default: 8000)
+- `GRADIO_WEB`: enable the Gradio Web UI (default: 1)
+- `GRADIO_ENDPOINT`: endpoint for the Gradio Web UI (default: web)
+- `AUTO_USE_VERBALIZER`: automatically use the verbalizer (convert numbers to words) (default: 1)
+- `DATA_DIR`: data directory (default: /data)
+
+### Data volume structure
+After the first run the data directory will look like this:
+
+- `.cache` - contains verbalization model download cache. ~0.5mb
+- `multi` - contains multi-voice model downloaded from HuggingFace Hub. ~715mb
+- `onnx` - contains ONNX verbalization models downloaded from HuggingFace Hub. ~4.5gb
+- `single` - contains single-voice model downloaded from HuggingFace Hub. ~770mb
+
 
 ### Things to do that I have no knowledge on (help appreciated)
 
 - [ ] Make this use less RAM
-- [ ] Make this pronounce numbers
 - [ ] Make this correctly support mp3 response format
+- [x] Make this pronounce numbers
 
 ### Things to do that depend on the author's code
 
 - [ ] Dynamic model loading depending on an environment variable
+- [ ] Dynamic verbalization model loading depending on an environment variable
 - [ ] As soon as the code can be executed as is, add it as a submodule to this repository
 
 ### Things to do that I have no experience in (help appreciated)
@@ -79,6 +98,7 @@ curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
   "input": "Русн+я вже майже вся подохла. Залишилося ще трохи почекати, і перемога буде за нами.",
   "voice": 5,
   "speed": 1.0,
+  "verbalize": 1,
 }'
 ```
 #### Request Body Parameters
