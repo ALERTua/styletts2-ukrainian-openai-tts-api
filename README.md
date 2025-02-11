@@ -22,6 +22,8 @@ docker run \
   -d \
   --name='styletts2-ukrainian-openai-tts-api' \
   --net='bridge' \
+  -e 'GRADIO_WEB'='1' \
+  -e 'GRADIO_ENDPOINT'='web' \
   -e 'PORT'='8000' \
   -p '8000:8000/tcp' \
   -v './styletts2-ukrainian-openai-tts-api-data/':'/data':'rw' \
@@ -36,6 +38,7 @@ docker run \
 
 - [ ] Make this use less RAM
 - [ ] Make this pronounce numbers
+- [ ] Make this correctly support mp3 response format
 
 ### Things to do that depend on the author's code
 
@@ -89,7 +92,10 @@ curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
 
 #### Gradio Web UI
 
-You can access the Gradio web UI at http://{container_ip}:$PORT
+You can access the Gradio Web UI at http://{container_ip}:$PORT/$GRADIO_ENDPOINT
+You can turn the Gradio Web UI off by passing `-e 'GRADIO_WEB'='0'`
+You can change the Gradio Web UI endpoint off by passing `-e 'GRADIO_ENDPOINT'='new_endpoint'` and use it at http://{container_ip}:$PORT/new_endpoint
+
 
 #### List Voices
 
@@ -122,8 +128,8 @@ curl -X GET "http://127.0.0.1:8000/v1/audio/voices" -H "accept: application/json
 
 ### Caveats
 
+- Do not use `/` and a `GRADIO_ENDPOINT`, as all other API endpoints will fail.
 - The model does not handle numbers(!) so make sure to replace them with words.
-
 ```python
 # pip install num2words
 

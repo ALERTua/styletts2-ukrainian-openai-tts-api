@@ -2,8 +2,11 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS production
 
 LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
-ENV PORT=8000
 ENV DATA_DIR=/data
+ENV GRADIO_WEB=1
+ENV GRADIO_ENDPOINT=web
+ENV PORT=8000
+
 EXPOSE $PORT
 
 VOLUME ["$DATA_DIR"]

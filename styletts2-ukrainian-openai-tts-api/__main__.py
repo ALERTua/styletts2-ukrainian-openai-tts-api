@@ -1,6 +1,7 @@
 import os
 import io
 import logging
+from distutils.util import strtobool
 from pathlib import Path
 from typing import Any, Literal
 
@@ -30,6 +31,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+GRADIO_WEB = strtobool(os.getenv('GRADIO_WEB', '1'))
+GRADIO_ENDPOINT = os.getenv('GRADIO_ENDPOINT', 'web').lstrip('/')
+if GRADIO_WEB:
+    LOG.info("Initing Gradio WEB UI")
+    app = gr.mount_gradio_app(app, demo, path=f"/{GRADIO_ENDPOINT}")
+
 
 type ResponseFormat = Literal["mp3", "flac", "wav", "pcm"]
 SUPPORTED_RESPONSE_FORMATS = ("mp3", "wav")
@@ -197,5 +204,4 @@ def get_health() -> HealthCheck:
 if __name__ == '__main__':
     import uvicorn
 
-    app = gr.mount_gradio_app(app, demo, path="/")
     uvicorn.run(app, host="127.0.0.1", port=int(os.getenv('PORT', 8000)), log_level="debug")
