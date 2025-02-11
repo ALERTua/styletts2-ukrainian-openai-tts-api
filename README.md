@@ -51,6 +51,9 @@ After the first run the data directory will look like this:
 - `onnx` - contains ONNX verbalization models downloaded from HuggingFace Hub. ~4.5gb
 - `single` - contains single-voice model downloaded from HuggingFace Hub. ~770mb
 
+### Resources usage
+- tag `latest` uses ~10.63GiB of RAM
+- tag `all` uses ~2GB more than `latest`
 
 ### Things to do that I have no knowledge on (help appreciated)
 
