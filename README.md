@@ -70,6 +70,8 @@ After the first run the data directory will look like this:
 
 ## TODO
 
+- [ ] a separate verbalization endpoint
+- [ ] fork the author's code to a github repo and use it as a submodule until the code can be used as is 
 - [x] healthcheck endpoint
 
 ### Usage
