@@ -82,7 +82,7 @@ After the first run the data directory will look like this:
 - Install https://github.com/sfortis/openai_tts in your Home Assistant
 - Provide it with the url to the container port with any api key, any model (they are hardcoded).
 - These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (without .wav)
-- Use `+` symbol before a vowel to stress it, e.g. `русн+я`.
+- If a stress is wrong use `+` symbol after a syllable to stress it, e.g. `русня+`.
 - The model handles short messages poorly so at least end each syntax with a dot. 
 
 ### Endpoints
