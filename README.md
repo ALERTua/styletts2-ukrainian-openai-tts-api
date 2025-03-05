@@ -50,6 +50,7 @@ After the first run the data directory will look like this:
 - `multi` - contains multi-voice model downloaded from HuggingFace Hub. ~715mb
 - `onnx` - contains ONNX verbalization models downloaded from HuggingFace Hub. ~4.5gb
 - `single` - contains single-voice model downloaded from HuggingFace Hub. ~770mb
+- `stanza` - Stressify cache. ~188mb
 
 ### Resources usage
 - tag `latest` uses ~10.63GiB of RAM
