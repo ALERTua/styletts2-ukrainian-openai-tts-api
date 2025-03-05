@@ -3,8 +3,11 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 [![Russian Warship Go Fuck Yourself](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/RussianWarship.svg)](https://stand-with-ukraine.pp.ua)
 
+Repository: https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api
 
-[![Docker Image Latest](https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/actions/workflows/docker-image.yml/badge.svg)](https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/actions/workflows/docker-image.yml)
+GitHub Docker Registry: https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/pkgs/container/styletts2-ukrainian-openai-tts-api
+
+Docker Hub: https://hub.docker.com/r/alertua/styletts2-ukrainian-openai-tts-api
 
 Docker image for the [patriotyk/styletts2-ukrainian](https://huggingface.co/spaces/patriotyk/styletts2-ukrainian) gradio app with an OpenAI TTS API endpoint to use it with Home Assistant.
 
