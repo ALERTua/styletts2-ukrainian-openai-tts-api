@@ -54,4 +54,6 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=5 \
 
 ENTRYPOINT []
 
+ENV STANZA_RESOURCES_DIR=$DATA_DIR/stanza
+
 CMD uv run uvicorn $SOURCE_DIR_NAME.__main__:app --host 0.0.0.0 --port ${PORT-8000}

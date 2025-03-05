@@ -17,8 +17,8 @@ import numpy as np
 
 os.chdir(Path(__file__).parent.parent / 'styletts2-ukrainian')
 
-from infer import split_to_parts, device, _inf, compute_style, models as infer_models  # noqa: E504
-from app import prompts_dir, demo, verbalize  # noqa: E504
+from infer import split_to_parts, device, _inf, compute_style, models as infer_models  # noqa: E504, E402
+from app import prompts_dir, demo, verbalize  # noqa: E504, E402
 
 logging.basicConfig(level=logging.DEBUG)
 LOG = logging.getLogger("app")
