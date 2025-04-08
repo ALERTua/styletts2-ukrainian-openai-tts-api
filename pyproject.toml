@@ -5,7 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi>=0.115.6",
+    "fastapi>=0.115.12",
+    "gradio-client>=1.8.0",
+    "python-dotenv>=1.1.0",
+    "soundfile>=0.13.1",
     "uvicorn>=0.34.0",
 ]
 
@@ -14,6 +17,6 @@ members = ["styletts2-ukrainian"]
 
 [dependency-groups]
 dev = [
-    "pre-commit>=4.0.1",
-    "ruff>=0.9.2",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.4",
 ]

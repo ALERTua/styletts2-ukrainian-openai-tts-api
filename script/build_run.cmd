@@ -1,5 +1,5 @@
 
-@if not defined DOCKER_HOSTNAME set DOCKER_HOSTNAME=docker
+@if not defined DOCKER_HOSTNAME set DOCKER_HOSTNAME=docker.local
 @if not defined DOCKER_HOST set DOCKER_HOST=tcp://%DOCKER_HOSTNAME%:2375
 @if not defined STAGE set STAGE=production
 @if not defined CONTAINER_NAME set CONTAINER_NAME=test
