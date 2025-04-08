@@ -35,7 +35,7 @@ The best way is to use the [docker-compose.yml](/docker-compose.yml)
 
 
 ### Resources usage
-- tag `latest` uses ~86 MiB of RAM
+- tag `latest` uses ~244 MiB of RAM
 
 
 ### Things to do that depend on the author's code
