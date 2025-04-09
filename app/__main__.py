@@ -2,6 +2,7 @@ from __future__ import annotations
 import os
 import io
 import logging
+import time
 from typing import Any, Literal
 
 from fastapi.responses import StreamingResponse, RedirectResponse, Response
@@ -63,7 +64,13 @@ MIN_SAMPLE_RATE = 8000
 MAX_SAMPLE_RATE = 48000
 DEFAULT_SAMPLE_RATE = 24000
 
-gr_client = Client(GRADIO_URL)
+gr_client = None
+while gr_client is None:
+    try:
+        gr_client = Client(GRADIO_URL)
+    except Exception as e:
+        LOG.error(f"Failed to connect to gradio: {str(e)}. Retrying in 10 seconds")
+        time.sleep(10)
 
 
 def convert_gradio_audio_to_streaming_response(
