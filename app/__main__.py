@@ -131,7 +131,7 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
     voice = body.voice if model_name == "multi" else None
 
     LOG.info(f"{input_=}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
-    if verbalize:
+    if verbalize and any(c.isdigit() for c in input_):
         try:
             input_ = gr_client.predict(text=input_, api_name="/verbalize")
         except Exception as e:
