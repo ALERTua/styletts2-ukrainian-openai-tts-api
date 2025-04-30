@@ -9,6 +9,11 @@ from fastapi.responses import StreamingResponse, RedirectResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, status
 from pydantic import BaseModel, Field
+try:
+    from .stress_recovery import recover_stress
+except:
+    from app.stress_recovery import recover_stress
+
 import soundfile as sf
 
 from gradio_client import Client
@@ -16,6 +21,9 @@ from gradio_client import Client
 from dotenv import load_dotenv
 
 load_dotenv()
+
+STRESS_SYMBOL = '`'
+STRESS_SYMBOL_REPLACEMENT = "\u0301"
 
 
 def strtobool(val):  # distutil strtobool
@@ -132,8 +140,15 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
 
     LOG.info(f"{input_=}, {voice=}, {speed=}, {response_format=}, {sample_rate=}")
     if verbalize:
+        original_input = input_
         try:
-            input_ = gr_client.predict(text=input_, api_name="/verbalize")
+            verbalized_input = gr_client.predict(text=original_input.replace(STRESS_SYMBOL, ''), api_name="/verbalize")
+            if STRESS_SYMBOL in original_input:
+                input_ = recover_stress(original_input, verbalized_input, stress_symbol=STRESS_SYMBOL)
+                input_ = input_.replace(STRESS_SYMBOL, STRESS_SYMBOL_REPLACEMENT)
+                LOG.info(f"Verbalized and stress recovered input: {input_}")
+            else:
+                LOG.info(f"Verbalized input: {input_}")
         except Exception as e:
             msg = f"Error verbalizing speech: {e}"
             LOG.error(msg)
