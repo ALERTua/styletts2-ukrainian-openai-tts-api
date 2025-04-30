@@ -54,7 +54,7 @@ You can also deploy the Gradio App the way you like and just point this applicat
 - Add https://github.com/sfortis/openai_tts integration to your Home Assistant instance.
 - Provide it with the url to the container port with any api key.
 - These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (filename without .pt)
-- If a stress is wrong use `+` symbol after a syllable to stress it, e.g. `русня+`.
+- If a stress is wrong use ``` ` ``` symbol before a syllable to stress it, e.g. ```русн`я```.
 - The model handles short messages poorly so at least end each syntax with a dot.
 
 
