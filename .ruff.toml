@@ -1,0 +1,56 @@
+[lint]
+select = [
+    "ALL",
+]
+
+ignore = [
+    "ANN401", # Dynamically typed expressions (typing.Any) are disallowed
+    "D203", # no-blank-line-before-class (incompatible with formatter)
+    "D212", # multi-line-summary-first-line (incompatible with formatter)
+    "COM812", # incompatible with formatter
+    "ISC001", # incompatible with formatter
+    "A005", # Module `select` shadows a Python standard-library module
+    "D100", # Missing docstring in public module
+    "G004", # Logging statement uses f-string
+    "D104", # Missing docstring in public package
+]
+[lint.extend-per-file-ignores]
+"test/**/*.py" = [
+    "S101",
+    "ANN001",
+    "D",
+    "PT006",
+    "E501",
+    "RUF001",
+    "ANN201",
+
+    "INP001",
+]
+"stress_recovery.py" = [
+    "B007",
+]
+
+[lint.flake8-pytest-style]
+fixture-parentheses = false
+
+[lint.pyupgrade]
+keep-runtime-typing = true
+
+[lint.mccabe]
+max-complexity = 25
+
+[format]
+docstring-code-format = true
+docstring-code-line-length = 120
+quote-style = "preserve"
+
+[lint.pycodestyle]
+max-doc-length = 120
+max-line-length = 120
+
+[lint.pylint]
+max-args = 10
+max-branches = 15
+max-nested-blocks = 10
+max-positional-args = 3
+max-public-methods = 30
