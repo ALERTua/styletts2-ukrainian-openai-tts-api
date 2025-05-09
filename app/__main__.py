@@ -204,13 +204,19 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
     if verbalize:
         original_input = input_
         try:
-            verbalized_input = gr_client.predict(text=original_input.replace(STRESS_SYMBOL, ""), api_name="/verbalize")
+            verbalized_input = gr_client.predict(
+                text=original_input.replace(STRESS_SYMBOL, ""),
+                api_name="/verbalize",
+            )
             if STRESS_SYMBOL in original_input:
-                input_ = recover_stress(original_input, verbalized_input, stress_symbol=STRESS_SYMBOL)
+                input_ = recover_stress(
+                    original_input, verbalized_input, stress_symbol=STRESS_SYMBOL
+                )
                 input_ = input_.replace(STRESS_SYMBOL, STRESS_SYMBOL_REPLACEMENT)
-                LOG.info(f"Verbalized and stress recovered input: {input_}")
+                LOG.info(f"Verbalized and stress recovered output: {input_}")
             else:
-                LOG.info(f"Verbalized input: {input_}")
+                input_ = verbalized_input
+                LOG.info(f"Verbalized output: {input_}")
         except Exception as e:
             msg = f"Error verbalizing speech: {e}"
             LOG.exception(msg)
