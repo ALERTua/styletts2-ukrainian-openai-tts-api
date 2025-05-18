@@ -52,7 +52,7 @@ You can also deploy the Gradio App the way you like and just point this applicat
 ### Usage in Home Assistant
 
 - Add https://github.com/sfortis/openai_tts integration to your Home Assistant instance.
-- Provide it with the url to the container port.
+- Provide it with the url to this container UVICORN forwarded port.
 - You can leave the API key empty, as the endpoint does not check for it.
 - Use one of these models: multi, single
 - Use one of the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (filename without .pt). E.g. `Марина Панас`
