@@ -79,6 +79,21 @@ curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
   "verbalize": 1,
 }'
 ```
+```powershell
+$headers = @{
+    "Content-Type" = "application/json"
+}
+
+Invoke-RestMethod -Uri 'http://127.0.0.1:8000/v1/audio/speech' `
+    -Method POST `
+    -Headers $headers `
+    -Body '{
+        "input": "Зустр`іч признач`ена на 15:30 12.05.2025 у конференц-зал`і №3."
+    }' `
+    -OutFile 'output.mp3'
+
+explorer.exe output.mp3
+```
 
 #### Request Body Parameters
 
