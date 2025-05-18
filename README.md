@@ -49,16 +49,27 @@ You can also deploy the Gradio App the way you like and just point this applicat
 - [ ] a separate verbalization endpoint
 
 
-### Usage
+### Usage in Home Assistant
 
 - Add https://github.com/sfortis/openai_tts integration to your Home Assistant instance.
-- Provide it with the url to the container port with any api key.
+- Provide it with the url to the container port.
+- You can leave the API key empty, as the endpoint does not check for it.
 - Use one of these models: multi, single
-- These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (filename without .pt)
+- Use one of the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (filename without .pt). E.g. `Марина Панас`
 - If a stress is wrong use ``` ` ``` symbol before a syllable to stress it, e.g. ```русн`я```.
 - The model handles short messages poorly so at least end each syntax with a dot.
 
 ![image](media/HA.png)
+
+```yaml
+action: tts.speak
+data:
+  media_player_entity_id: media_player.office_speaker
+  message: тестове повідомлення 123.
+  cache: false
+target:
+  entity_id: tts.styletts2
+```
 
 ### Endpoints
 
