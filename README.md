@@ -53,10 +53,12 @@ You can also deploy the Gradio App the way you like and just point this applicat
 
 - Add https://github.com/sfortis/openai_tts integration to your Home Assistant instance.
 - Provide it with the url to the container port with any api key.
+- Use one of these models: multi, single
 - These are the voices available: https://huggingface.co/spaces/patriotyk/styletts2-ukrainian/tree/main/voices (filename without .pt)
 - If a stress is wrong use ``` ` ``` symbol before a syllable to stress it, e.g. ```русн`я```.
 - The model handles short messages poorly so at least end each syntax with a dot.
 
+![image](media/HA.png)
 
 ### Endpoints
 
@@ -69,6 +71,7 @@ This endpoint synthesizes speech from the given text using the specified voice a
 **Example Request:**
 
 ```bash
+#!/bin/bash
 curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
 -H "accept: audio/wav" \
 -H "Content-Type: application/json" \
@@ -76,10 +79,11 @@ curl -X POST "http://127.0.0.1:8000/v1/audio/speech" \
   "input": "Русн+я вже майже вся подохла. Залишилося ще трохи почекати, і перемога буде за нами.",
   "voice": "Марина Панас",
   "speed": 1.0,
-  "verbalize": 1,
+  "verbalize": 1
 }'
 ```
 ```powershell
+# powershell
 $headers = @{
     "Content-Type" = "application/json"
 }
