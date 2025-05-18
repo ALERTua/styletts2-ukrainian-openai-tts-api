@@ -7,6 +7,9 @@ services:
       - AUTO_USE_VERBALIZER=1
       - UVICORN_PORT=8000
       - UVICORN_HOST=0.0.0.0
+    ports:
+      # host_port:container_port
+      - ${UVICORN_PORT}:${UVICORN_PORT}
 
   gradio:
     image: ghcr.io/alertua/patriotyk_styletts2_ukrainian_docker:latest
@@ -15,6 +18,7 @@ services:
       - PORT=${GRADIO_PORT}
       - GRADIO_SERVER_NAME=0.0.0.0
     ports:
+      # host_port:container_port
       - ${GRADIO_PORT}:${GRADIO_PORT}
     volumes:
       - ${CACHE_PATH}/.cache:/usr/src/app/.cache
