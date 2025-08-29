@@ -39,8 +39,7 @@ RUN --mount=type=cache,target=$UV_CACHE_DIR \
 COPY . .
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=5 \
-        CMD curl --fail --silent --show-error --max-time 4 --http1.1 \
-        -H "Host: localhost" "http://127.0.0.1:${UVICORN_PORT}/health" >/dev/null || exit 1
+        CMD curl --fail --silent --http1.1 "http://127.0.0.1:${UVICORN_PORT}/health"
 
 ENTRYPOINT []
 
