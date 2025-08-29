@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=$UV_CACHE_DIR \
 COPY . .
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=5 \
-        CMD curl --fail --silent --http1.1 "http://127.0.0.1:${UVICORN_PORT}/health"
+        CMD python -c "import urllib.request as u; u.urlopen('http://127.0.0.1:${UVICORN_PORT}/health', timeout=1)"
 
 ENTRYPOINT []
 
