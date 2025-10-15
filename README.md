@@ -32,6 +32,7 @@ By better option I mean a model of at least the same quality but in Piper-compat
 ### Deployment
 
 The best way is to use the [docker-compose.yml](/docker-compose.yml)
+Don't forget to create `.env` from [.env.example](/.env.example).
 You can also deploy the Gradio App the way you like and just point this application to it using the `GRADIO_URL` environment variable.
 
 

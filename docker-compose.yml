@@ -2,11 +2,8 @@ services:
   api:
     image: ghcr.io/alertua/styletts2-ukrainian-openai-tts-api:latest
     container_name: ${CONTAINER_PREFIX}api
-    environment:
-      - GRADIO_URL=http://${CONTAINER_PREFIX}gradio:${GRADIO_PORT}
-      - AUTO_USE_VERBALIZER=1
-      - UVICORN_PORT=8000
-      - UVICORN_HOST=0.0.0.0
+    env_file:
+      - .env
     ports:
       # host_port:container_port
       - ${UVICORN_PORT}:${UVICORN_PORT}
@@ -14,12 +11,11 @@ services:
   gradio:
     image: ghcr.io/alertua/patriotyk_styletts2_ukrainian_docker:latest
     container_name: ${CONTAINER_PREFIX}gradio
-    environment:
-      - PORT=${GRADIO_PORT}
-      - GRADIO_SERVER_NAME=0.0.0.0
+    env_file:
+      - .env
     ports:
       # host_port:container_port
-      - ${GRADIO_PORT}:${GRADIO_PORT}
+      - ${GRADIO_SERVER_PORT}:${GRADIO_SERVER_PORT}
     volumes:
       - ${CACHE_PATH}/.cache:/usr/src/app/.cache
       - ${CACHE_PATH}/onnx:/usr/src/app/onnx
