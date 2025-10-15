@@ -52,7 +52,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=pep440,enable=true,priority=900,prefix=,suffix=,pattern=,value=stable
+            type=pep440,enable=true,value=stable
           flavor: |
             latest=true
 
