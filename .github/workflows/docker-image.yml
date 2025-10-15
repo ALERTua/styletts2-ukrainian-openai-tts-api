@@ -55,7 +55,6 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}.{{patch}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value=stable,enable=${{ startsWith(github.ref, 'refs/tags/') }},priority=200
           flavor: |
             latest=auto
 
