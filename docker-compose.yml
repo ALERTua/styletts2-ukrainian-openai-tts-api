@@ -7,6 +7,9 @@ services:
     ports:
       # host_port:container_port
       - ${UVICORN_PORT}:${UVICORN_PORT}
+    depends_on:
+      gradio:
+        condition: service_healthy
 
   gradio:
     image: ghcr.io/alertua/patriotyk_styletts2_ukrainian_docker:latest
@@ -19,6 +22,12 @@ services:
     volumes:
       - ${CACHE_PATH}/.cache:/usr/src/app/.cache
       - ${CACHE_PATH}/onnx:/usr/src/app/onnx
+    healthcheck:
+      test: python -c "import sys, http.client; c=http.client.HTTPConnection('127.0.0.1', ${GRADIO_SERVER_PORT}, timeout=5); c.request('HEAD', '/'); r=c.getresponse(); sys.exit(0 if r.status==200 else 1)"
+      interval: 15s
+      timeout: 5s
+      start_period: 3s
+      retries: 10
 
 #    # uncomment this block to use the NVIDIA GPU
 #    deploy:
