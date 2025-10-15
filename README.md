@@ -7,8 +7,6 @@ Repository: [ALERTua/styletts2-ukrainian-openai-tts-api](https://github.com/ALER
 
 GitHub Docker Registry: https://github.com/ALERTua/styletts2-ukrainian-openai-tts-api/pkgs/container/styletts2-ukrainian-openai-tts-api
 
-Docker Hub: https://hub.docker.com/r/alertua/styletts2-ukrainian-openai-tts-api
-
 
 ## Description
 
