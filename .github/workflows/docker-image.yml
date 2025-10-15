@@ -57,7 +57,7 @@ jobs:
             type=semver,pattern={{major}}
             type=raw,value=stable,enable=${{ startsWith(github.ref, 'refs/tags/') }},priority=200
           flavor: |
-            latest=true
+            latest=auto
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
