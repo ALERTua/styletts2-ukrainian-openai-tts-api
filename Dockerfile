@@ -2,12 +2,8 @@ FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim AS production
 
 LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
-ENV GRADIO_URL="http://gradio:7860"
-ENV AUTO_USE_VERBALIZER=1
 ENV UVICORN_PORT=8000
 ENV UVICORN_HOST=0.0.0.0
-ENV GRADIO_SERVER_NAME=0.0.0.0
-ENV GRADIO_SERVER_PORT=7860
 
 EXPOSE $UVICORN_PORT
 
