@@ -35,7 +35,7 @@ You can also deploy the Gradio App the way you like and just point this applicat
 
 
 ### Resources usage
-- tag `latest` uses ~91 MiB of RAM
+- tag `latest` uses ~110 MiB of RAM
 
 
 ### Things to do that depend on the author's code
