@@ -18,6 +18,7 @@ on:
       - "**/*.rst"
       - "tests/"
       - ".github/"
+      - "media/"
 
 
 env:
