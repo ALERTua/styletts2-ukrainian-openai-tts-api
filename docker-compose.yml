@@ -20,8 +20,8 @@ services:
       # host_port:container_port
       - ${GRADIO_SERVER_PORT}:${GRADIO_SERVER_PORT}
     volumes:
-      - ${CACHE_PATH}/.cache:/usr/src/app/.cache
-      - ${CACHE_PATH}/onnx:/usr/src/app/onnx
+      # host_path:container_path
+      - ./${CONTAINER_PREFIX}data:/data
     healthcheck:
       test: python -c "import sys, http.client; c=http.client.HTTPConnection('127.0.0.1', ${GRADIO_SERVER_PORT}, timeout=5); c.request('HEAD', '/'); r=c.getresponse(); sys.exit(0 if r.status==200 else 1)"
       interval: 15s
