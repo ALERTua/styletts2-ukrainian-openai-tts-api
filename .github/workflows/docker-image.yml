@@ -52,7 +52,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=semver,pattern={{version}},value=stable
+            type=raw,value=stable,enable=${{ startsWith(github.ref, 'refs/tags/') }},priority=200
           flavor: |
             latest=true
 
