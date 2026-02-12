@@ -24,6 +24,7 @@ By better option I mean a model of at least the same quality but in Piper-compat
 - `UVICORN_HOST`: listen interface for the OpenAI TTS API (default: 0.0.0.0)
 - `GRADIO_PORT`: port for Gradio Web UI (default: 7860)
 - `GRADIO_SERVER_NAME`: listen interface for the Gradio App (default: 0.0.0.0)
+- `HF_TOKEN`: Hugging Face token to raise the download limit for HuggingFace. Optional (default: None)
 
 
 ### Deployment
