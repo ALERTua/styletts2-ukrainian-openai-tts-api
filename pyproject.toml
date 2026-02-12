@@ -5,11 +5,11 @@ description = ""
 readme = "README.md"
 requires-python = "==3.13.*"
 dependencies = [
-    "fastapi>=0.119.0",
-    "gradio-client>=1.13.3",
-    "python-dotenv>=1.1.1",
+    "fastapi",
+    "gradio-client>=2.0.3",
+    "python-dotenv",
     "soundfile>=0.13.1",
-    "uvicorn>=0.37.0",
+    "uvicorn",
 ]
 
 [tool.uv.workspace]
@@ -17,9 +17,9 @@ members = ["styletts2-ukrainian"]
 
 [dependency-groups]
 dev = [
-    "pre-commit-uv>=4.2.0",
-    "pytest>=8.4.2",
-    "ruff>=0.14.0",
+    "pre-commit-uv",
+    "pytest",
+    "ruff",
 ]
 
 [tool.pytest.ini_options]
