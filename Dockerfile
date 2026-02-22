@@ -15,6 +15,7 @@ ENV \
     UV_LINK_MODE=copy \
     UV_FROZEN=1 \
     UV_NO_PROGRESS=true \
+    UV_NO_DEV=true \
     UV_CACHE_DIR=.uv_cache \
     # Python
     PYTHONUNBUFFERED=1 \
