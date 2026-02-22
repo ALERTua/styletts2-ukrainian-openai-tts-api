@@ -9,6 +9,7 @@ from typing import Any, Literal
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse, Response, StreamingResponse
+from httpx import ConnectError
 from pydantic import BaseModel, Field
 
 try:
@@ -77,6 +78,9 @@ gr_client = None
 while gr_client is None:
     try:
         gr_client = Client(GRADIO_URL)
+    except ConnectError as e:
+        LOG.error(f"Failed to connect to gradio @ {GRADIO_URL}. Retrying in 10 seconds: {e}")
+        time.sleep(10)
     except Exception:
         LOG.exception("Failed to connect to gradio. Retrying in 10 seconds")
         time.sleep(10)
