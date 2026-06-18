@@ -3,12 +3,12 @@ name = "styletts2-ukrainian-openai-tts-api"
 version = "0"
 description = ""
 readme = "README.md"
-requires-python = "==3.13.*"
+requires-python = "==3.14.*"
 dependencies = [
     "fastapi",
-    "gradio-client>=2.0.3",
+    "gradio-client",
     "python-dotenv",
-    "soundfile>=0.13.1",
+    "soundfile",
     "uvicorn",
 ]
 

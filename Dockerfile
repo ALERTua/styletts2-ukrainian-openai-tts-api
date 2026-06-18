@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim AS production
+FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim AS production
 
 LABEL maintainer="ALERT <alexey.rubasheff@gmail.com>"
 
