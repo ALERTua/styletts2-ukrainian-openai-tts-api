@@ -19,7 +19,8 @@ ENV \
     UV_FROZEN=1 \
     UV_NO_PROGRESS=true \
     UV_NO_DEV=true \
-    UV_CACHE_DIR=.uv_cache \
+    # writable for any PUID at runtime; used as a cache mount during build
+    UV_CACHE_DIR=/tmp/uv-cache \
     # Python
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \

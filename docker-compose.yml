@@ -23,6 +23,9 @@ services:
     volumes:
       # host_path:container_path
       - ./${CONTAINER_PREFIX}data:/data
+      # uv cache lives in /data/uv_cache by default; uncomment to share
+      # one uv cache between several projects:
+      # - /path/to/shared/uv_cache:/data/uv_cache
     healthcheck:
       test: python -c "import sys, http.client; c=http.client.HTTPConnection('127.0.0.1', ${GRADIO_SERVER_PORT}, timeout=5); c.request('HEAD', '/'); r=c.getresponse(); sys.exit(0 if r.status==200 else 1)"
       interval: 15s
