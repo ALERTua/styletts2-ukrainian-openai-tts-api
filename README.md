@@ -19,6 +19,8 @@ By better option I mean a model of at least the same quality but in Piper-compat
 ### Docker-compose Environment Variables
 
 - `AUTO_USE_VERBALIZER`: automatically use the verbalizer (convert numbers to words) (default: 1)
+- `PUID`: user ID the API container runs as (default: 1000)
+- `PGID`: group ID the API container runs as (default: 1000)
 - `GRADIO_URL`: URL of the Gradio Web UI (default: http://gradio:7860)
 - `UVICORN_PORT`: port for the OpenAI TTS API (default: 8000)
 - `UVICORN_HOST`: listen interface for the OpenAI TTS API (default: 0.0.0.0)
