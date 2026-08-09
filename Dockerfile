@@ -44,4 +44,4 @@ HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=5 \
 
 ENTRYPOINT []
 
-CMD uv run uvicorn $SOURCE_DIR_NAME.__main__:app --host ${UVICORN_HOST} --port ${UVICORN_PORT}
+CMD ["sh", "-c", "exec uv run uvicorn ${SOURCE_DIR_NAME}.__main__:app --host ${UVICORN_HOST} --port ${UVICORN_PORT}"]
