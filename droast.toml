@@ -1,0 +1,8 @@
+skip = [
+    "DF011",
+    "DF007"
+]
+
+
+[shellcheck]
+mode = "auto"
