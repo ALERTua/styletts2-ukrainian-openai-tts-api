@@ -44,7 +44,7 @@ You can also deploy the Gradio App the way you like and just point this applicat
 
 ### Things to do that depend on the author's code
 
-- [ ] A separate endpoint that lists all voices
+- [x] A separate endpoint that lists all voices
 
 
 ## TODO
@@ -73,6 +73,16 @@ data:
 target:
   entity_id: tts.styletts2
 ```
+
+### Usage in Music Assistant
+
+- Add the built in OpenAI Text-to-speech provider.
+- Set the model to `multi` to pick a voice per message, or to `single` for the built in voice. The provider offers `tts-1` by default, which this API rejects.
+- Set the API endpoint to this container, **including the `/v1` path**, e.g. `http://127.0.0.1:8000/v1`. The provider appends `/audio/speech` and `/audio/voices` to it.
+- You can leave the API key empty, as the endpoint does not check for it.
+- The provider always asks for the `mp3` response format, which this API supports.
+- The voices are discovered through `GET /v1/audio/voices`, so the voices override in the provider options can stay empty. With the `single` model put one name there instead, otherwise the provider shows one entry per voice and every one of them sounds the same.
+
 
 ### Endpoints
 
@@ -121,6 +131,29 @@ explorer.exe output.mp3
 - **speed** (float): The speed of the speech. Default is `1.0`.
 - ~~**response_format** (string): The format of the audio output. Supported formats are `wav` and `mp3`. Default is `wav`.~~
 - ~~**sample_rate** (int): The sample rate of the audio. Default is `24000`.~~
+
+
+#### List Voices
+
+**Endpoint:** `GET /v1/audio/voices`
+
+Lists the voices the multi speaker model accepts. Every name in the response is a valid value for the `voice` field of the speech endpoint. The single speaker model has one built in voice and ignores that field.
+
+The names are read from the Gradio app description, which the Gradio client fetches once, while this application connects. A voice added to the Gradio app therefore shows up only after this application restarts. When the description cannot be read, the response holds the default voice alone.
+
+**Example Request:**
+
+```bash
+curl "http://127.0.0.1:8000/v1/audio/voices"
+```
+
+**Example Response:**
+
+```json
+{"voices": ["Інна Гелевера", "Анастасія Павленко", "Марина Панас"]}
+```
+
+The example above is shortened. The real response holds every voice the multi speaker model has.
 
 
 ### Caveats

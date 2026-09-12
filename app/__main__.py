@@ -14,8 +14,10 @@ from pydantic import BaseModel, Field
 
 try:
     from .stress_recovery import recover_stress
+    from .voices import parse_voices
 except:  # noqa: E722
     from app.stress_recovery import recover_stress
+    from app.voices import parse_voices
 
 import soundfile as sf
 from dotenv import load_dotenv
@@ -64,6 +66,10 @@ UNSUPORTED_RESPONSE_FORMATS = ("opus", "aac", "flac", "pcm")
 DEFAULT_RESPONSE_FORMAT = "wav"
 
 DEFAULT_VOICE = "Марина Панас"
+
+# the Gradio endpoint and the parameter of it that holds the voice names
+SYNTHESIZE_API_NAME = "/synthesize"
+VOICE_PARAMETER_NAME = "voice_name"
 
 models = ["multi", "single"]
 # noinspection PyTypeHints
@@ -235,7 +241,7 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
             text=input_,
             speed=speed,
             voice_name=voice,
-            api_name="/synthesize",
+            api_name=SYNTHESIZE_API_NAME,
         )
     except Exception as e:
         msg = f"Error synthesizing speech: {e}"
@@ -244,6 +250,43 @@ async def synthesize(body: CreateSpeechRequestBody) -> StreamingResponse:
         return Response(content=msg, status_code=500)
 
     return convert_gradio_audio_to_streaming_response(filepath=filepath, response_format=response_format)
+
+
+class VoicesResponse(BaseModel):
+    """Response model listing the voices the multi speaker model accepts."""
+
+    voices: list[str] = Field(
+        ...,
+        description="Voice names accepted by the voice field of the speech endpoint.",
+        examples=[[DEFAULT_VOICE]],
+    )
+
+
+def read_gradio_voices() -> list[str]:
+    """
+    Return the voice names the Gradio app advertises, or the default voice alone.
+
+    The Gradio client caches the API description while it connects, so a voice added to
+    the Gradio app appears only after this application restarts.
+    """
+    try:
+        api_info = gr_client.view_api(return_format="dict", print_info=False)
+    except Exception:
+        LOG.exception("Error reading the Gradio API description")
+        return [DEFAULT_VOICE]
+
+    names = parse_voices(api_info, SYNTHESIZE_API_NAME, VOICE_PARAMETER_NAME)
+    if not names:
+        LOG.warning(f"The Gradio app advertises no voices. Falling back to {DEFAULT_VOICE}")
+        return [DEFAULT_VOICE]
+
+    return names
+
+
+@app.get("/v1/audio/voices")
+def list_voices() -> VoicesResponse:
+    """List the voice names the multi speaker model accepts; the single speaker model ignores them."""
+    return VoicesResponse(voices=read_gradio_voices())
 
 
 class HealthCheck(BaseModel):

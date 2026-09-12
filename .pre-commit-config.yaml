@@ -22,6 +22,17 @@ repos:
 #      # Run the formatter.
 #      - id: ruff-format
 
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: python -m pytest test/ -q
+        language: python
+        additional_dependencies: ["pytest"]
+        # the suite is fast and covers pure modules, so run it whole, not per file
+        pass_filenames: false
+        always_run: true
+
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.12.13
     hooks:
